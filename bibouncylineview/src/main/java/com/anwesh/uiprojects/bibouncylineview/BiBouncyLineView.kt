@@ -135,6 +135,7 @@ class BiBouncyLineView(ctx : Context) : View(ctx) {
 
         fun draw(canvas : Canvas, paint : Paint) {
             canvas.drawBBLNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
         }
 
         fun update(cb : (Float) -> Unit) {
@@ -155,6 +156,30 @@ class BiBouncyLineView(ctx : Context) : View(ctx) {
             }
             cb()
             return this
+        }
+    }
+
+    data class BiBouncyLine(var i : Int) {
+
+        private val root : BBLNode = BBLNode(0)
+        private var curr : BBLNode = root
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            curr.update {
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
         }
     }
 }
