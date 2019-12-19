@@ -12,9 +12,9 @@ import android.graphics.Paint
 import android.graphics.Canvas
 import android.graphics.Color
 
-val nodes : Int = 5
-val lines : Int = 2
-val scGap : Float = 0.02f
+val nodes : Int = 1
+val lines : Int = 6
+val scGap : Float = 0.005f
 val strokeFactor : Int = 90
 val sizeFactor : Float = 3f
 val foreColor : Int = Color.parseColor("#283593")
@@ -31,7 +31,7 @@ fun Canvas.drawBiBouncyLine(size : Float, scale : Float, gap : Float, paint : Pa
     for (j in 0..(lines - 1)) {
         val scf : Float = sf.divideScale(j, lines)
         save()
-        translate(gap - (j + 1) * size, 0f)
+        translate(gap - j * size, 0f)
         rotate(-90f * scf)
         drawLine(0f, 0f, 0f, -size, paint)
         restore()
@@ -73,7 +73,7 @@ class BiBouncyLineView(ctx : Context) : View(ctx) {
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
-            scale += scale * scGap * dir
+            scale += scGap * dir
             if (Math.abs(scale - prevScale) > 1) {
                 scale = prevScale + dir
                 dir = 0f
