@@ -205,4 +205,13 @@ class BiBouncyLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BiBouncyLineView {
+            val view : BiBouncyLineView = BiBouncyLineView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
